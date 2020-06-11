@@ -1,7 +1,9 @@
 package br.com.suculent4s.domain.model;
 
 import br.com.suculent4s.domain.enums.TipoUsuarioEnum;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,8 +26,10 @@ public class TipoUsuario {
     private Long id;
 
     @Enumerated(EnumType.STRING)
+    //@JsonFormat(shape = JsonFormat.Shape.STRING)
+    @JsonProperty("tipo")
     @Column(name = "tipo_usuario")
-    @NotBlank(message = "{campo.tipo-usuario.tipo}")
+    //@NotBlank(message = "{campo.tipo-usuario.tipo}")
     private TipoUsuarioEnum tipoUsuario;
 
     @JsonIgnoreProperties(value = {"tipoUsuario"})

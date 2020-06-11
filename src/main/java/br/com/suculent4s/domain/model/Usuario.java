@@ -1,7 +1,9 @@
 package br.com.suculent4s.domain.model;
 
 import br.com.suculent4s.domain.enums.TipoPessoaEnum;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,15 +37,19 @@ public class Usuario {
     private String email;
 
     @NotBlank(message = "{campo.usuario.cpf-ou-cnpj}")
+    @JsonProperty("cpf_ou_cnpj")
     @Column(name = "cpf_ou_cnpj", unique = true)
     private String cpfOuCnpj;
 
-    @NotBlank(message = "{campo.usuario.tipo-pessoa}")
+    //@NotBlank(message = "{campo.usuario.tipo-pessoa}")
     @Enumerated(EnumType.STRING)
+    //@JsonFormat(shape = JsonFormat.Shape.STRING)
+    @JsonProperty("tipo_pessoa")
     @Column(name = "tipo_pessoa")
     private TipoPessoaEnum tipoPessoa;
 
     @Valid
+    @JsonProperty("tipo_usuario")
     @JsonIgnoreProperties(value = {"usuario"})
     @ManyToMany
     @JoinTable(name = "acesso_usuario",

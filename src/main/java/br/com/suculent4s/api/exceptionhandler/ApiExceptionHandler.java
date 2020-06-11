@@ -11,6 +11,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
@@ -40,12 +42,28 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             campos.add(new Problema.Campo(nome, mensagem));
         }
 
+        var problema = new Problema();
+        problema.setStatus(status.value());
+        problema.setTitulo("Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.");
+        problema.setDataHora(DateTimeConverter.converterDateTimeDefaultFormat(OffsetDateTime.now()));
+        problema.setCampos(campos);
+
+        return super.handleExceptionInternal(exception, problema, headers, status, request);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException exception,
+                                                          HttpHeaders headers, HttpStatus status, WebRequest request) {
+        String title = "Unexpected error";
+        String nome = "Malformed JSON request";
+
         var problema = Problema.builder()
                 .status(status.value())
-                .titulo("Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.")
+                .titulo(title)
                 .dataHora(DateTimeConverter.converterDateTimeDefaultFormat(OffsetDateTime.now()))
-                .campos(campos)
+                .campos(Arrays.asList(new Problema.Campo(nome, exception.getLocalizedMessage())))
                 .build();
+
         return super.handleExceptionInternal(exception, problema, headers, status, request);
     }
 
@@ -54,11 +72,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                                                                WebRequest request){
         var status = HttpStatus.NOT_FOUND;
 
-        var problema = Problema.builder()
-                .status(status.value())
-                .titulo(exception.getMessage())
-                .dataHora(DateTimeConverter.converterDateTimeDefaultFormat(OffsetDateTime.now()))
-                .build();
+        var problema = new Problema();
+        problema.setStatus(status.value());
+        problema.setTitulo(exception.getMessage());
+        problema.setDataHora(DateTimeConverter.converterDateTimeDefaultFormat(OffsetDateTime.now()));
+
         return handleExceptionInternal(exception, problema, new HttpHeaders(), status, request);
     }
 
@@ -66,25 +84,24 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handlerNegocio(NegocioException exception, WebRequest request) {
         var status = HttpStatus.BAD_REQUEST;
 
-        var problema = Problema.builder()
-                .status(status.value())
-                .titulo(exception.getMessage())
-                .dataHora(DateTimeConverter.converterDateTimeDefaultFormat(OffsetDateTime.now()))
-                .build();
-        return handleExceptionInternal(exception, problema, new HttpHeaders(), status, request);
+        var problema = new Problema();
+        problema.setStatus(status.value());
+        problema.setTitulo(exception.getMessage());
+        problema.setDataHora(DateTimeConverter.converterDateTimeDefaultFormat(OffsetDateTime.now()));
 
+        return handleExceptionInternal(exception, problema, new HttpHeaders(), status, request);
     }
 
     @ExceptionHandler(NegocioListException.class)
     public ResponseEntity<Object> handlerNegocioList(NegocioListException exception, WebRequest request) {
         var status = HttpStatus.BAD_REQUEST;
 
-        var problemas = Problema.builder()
-                .status(status.value())
-                .titulo(exception.getMessage())
-                .dataHora(DateTimeConverter.converterDateTimeDefaultFormat(OffsetDateTime.now()))
-                .erros(exception.getErros())
-                .build();
+        var problemas = new Problema();
+        problemas.setStatus(status.value());
+        problemas.setTitulo(exception.getMessage());
+        problemas.setDataHora(DateTimeConverter.converterDateTimeDefaultFormat(OffsetDateTime.now()));
+        problemas.setErros(exception.getErros());
+
         return handleExceptionInternal(exception, problemas, new HttpHeaders(), status, request);
 
     }
