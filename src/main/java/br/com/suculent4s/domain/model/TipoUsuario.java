@@ -8,7 +8,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.util.List;
 
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,9 +25,10 @@ public class TipoUsuario {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_usuario")
+    @NotBlank(message = "{campo.tipo-usuario.tipo}")
     private TipoUsuarioEnum tipoUsuario;
 
     @JsonIgnoreProperties(value = {"tipoUsuario"})
     @ManyToMany(mappedBy = "tipoUsuario")
-    private Usuario usuario;
+    private List<Usuario> usuario;
 }
