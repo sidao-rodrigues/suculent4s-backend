@@ -16,6 +16,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity
+@Table(name = "usuario")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

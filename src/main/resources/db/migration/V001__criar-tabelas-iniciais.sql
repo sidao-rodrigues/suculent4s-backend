@@ -31,7 +31,7 @@
 DROP TABLE IF EXISTS `usuario` ; --`suculentas`.
 
 CREATE TABLE IF NOT EXISTS `usuario` (
-  `id` BIGINT(20) NOT NULL,
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(100) NOT NULL,
   `email` VARCHAR(60) NOT NULL,
   `cpf_ou_cnpj` VARCHAR(20) NOT NULL,
@@ -59,7 +59,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `estado` ; --`suculentas`.
 
 CREATE TABLE IF NOT EXISTS `estado` (
-  `id` BIGINT(20) NOT NULL,
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NOT NULL,
   `uf` VARCHAR(2) NOT NULL,
   PRIMARY KEY (`id`))
@@ -72,7 +72,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `cidade` ; --`suculentas`.
 
 CREATE TABLE IF NOT EXISTS `cidade` (
-  `id` BIGINT(20) NOT NULL,
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NOT NULL,
   `id_estado` BIGINT(20) NOT NULL,
   PRIMARY KEY (`id`, `id_estado`),
@@ -91,7 +91,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `endereco` ; --`suculentas`.
 
 CREATE TABLE IF NOT EXISTS `endereco` (
-  `id` BIGINT(20) NOT NULL,
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `logradouro` VARCHAR(160) NOT NULL,
   `numero` VARCHAR(15) NOT NULL,
   `complemento` VARCHAR(100) NULL,
@@ -123,7 +123,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `pedido` ; --`suculentas`.
 
 CREATE TABLE IF NOT EXISTS `pedido` (
-  `id` BIGINT(20) NOT NULL,
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `data_pedido` DATETIME NOT NULL,
   `total` DECIMAL(20,2) NOT NULL,
   `id_endereco` BIGINT(20) NOT NULL,
@@ -150,7 +150,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `categoria` ; --`suculentas`.
 
 CREATE TABLE IF NOT EXISTS `categoria` (
-  `id` BIGINT(20) NOT NULL,
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
@@ -162,7 +162,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `especie` ; --`suculentas`.
 
 CREATE TABLE IF NOT EXISTS `especie` (
-  `id` BIGINT(20) NOT NULL,
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
@@ -174,7 +174,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `produto` ; --`suculentas`.
 
 CREATE TABLE IF NOT EXISTS `produto` (
-  `id` BIGINT(20) NOT NULL,
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(100) NOT NULL,
   `preco` DECIMAL(20,2) NOT NULL,
   `id_categoria` BIGINT(20) NOT NULL,
@@ -201,7 +201,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `item_pedido` ; --`suculentas`.
 
 CREATE TABLE IF NOT EXISTS `item_pedido` (
-  `id` BIGINT(20) NOT NULL,
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `desconto` DECIMAL(20,2) NOT NULL,
   `quantidade` INT NOT NULL,
   `id_pedido` BIGINT(20) NOT NULL,

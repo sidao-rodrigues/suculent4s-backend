@@ -35,7 +35,7 @@ public class VerifyIsExistTypeEnum {
         if(typeEnum.toString().equalsIgnoreCase(TipoUsuarioEnum.class.toString())){
             list = Arrays.asList(TipoUsuarioEnum.values());
         } else if (typeEnum.toString().equalsIgnoreCase(TipoPessoaEnum.class.toString())) {
-            list = Arrays.asList(TipoUsuarioEnum.values());
+            list = Arrays.asList(TipoPessoaEnum.values());
         }
         return list;
     }

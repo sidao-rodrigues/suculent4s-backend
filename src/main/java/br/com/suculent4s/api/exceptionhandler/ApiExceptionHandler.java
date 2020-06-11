@@ -1,5 +1,7 @@
 package br.com.suculent4s.api.exceptionhandler;
 
+import br.com.suculent4s.domain.enums.TipoPessoaEnum;
+import br.com.suculent4s.domain.enums.TipoUsuarioEnum;
 import br.com.suculent4s.domain.exception.EntidadeNaoEncontradaException;
 import br.com.suculent4s.domain.exception.ListaVaziaException;
 import br.com.suculent4s.domain.exception.NegocioException;
@@ -54,14 +56,17 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException exception,
                                                           HttpHeaders headers, HttpStatus status, WebRequest request) {
-        String title = "Unexpected error";
-        String nome = "Malformed JSON request";
+        String tipoEnum = exception.getMessage().contains(TipoUsuarioEnum.class.getSimpleName()) ?
+                TipoUsuarioEnum.class.getSimpleName().substring(0, 11) : TipoPessoaEnum.class.getSimpleName().substring(0, 10);
+        String title = "Validar Campos.";
+        String nome = "Formato inválido para o campo : {"+tipoEnum+"}.";
+        String texto = "O valor informado para o campo do tipo enum : {"+tipoEnum+"} é inválido.";
 
         var problema = Problema.builder()
                 .status(status.value())
                 .titulo(title)
                 .dataHora(DateTimeConverter.converterDateTimeDefaultFormat(OffsetDateTime.now()))
-                .campos(Arrays.asList(new Problema.Campo(nome, exception.getLocalizedMessage())))
+                .campos(Arrays.asList(new Problema.Campo(nome, texto)))
                 .build();
 
         return super.handleExceptionInternal(exception, problema, headers, status, request);
