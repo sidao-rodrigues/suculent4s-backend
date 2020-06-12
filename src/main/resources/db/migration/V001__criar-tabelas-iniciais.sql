@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(100) NOT NULL,
   `email` VARCHAR(60) NOT NULL,
+  `senha` VARCHAR(100) NOT NULL,
   `cpf_ou_cnpj` VARCHAR(20) NOT NULL,
   `tipo_pessoa` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`id`),

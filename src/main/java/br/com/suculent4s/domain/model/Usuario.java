@@ -37,6 +37,11 @@ public class Usuario {
     @Column(name = "email", length = 60, nullable = false)
     private String email;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @NotBlank(message = "{campo.usuario.senha}")
+    @Column(name = "senha", nullable = false)
+    private String senha;
+
     @NotBlank(message = "{campo.usuario.cpf-ou-cnpj}")
     @JsonProperty("cpf_ou_cnpj")
     @Column(name = "cpf_ou_cnpj", unique = true)
